@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>develop4s_hub </title>
+  <!-- Google Fonts + Font Awesome 6 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: #f4f2f0;
+      color: #1b1b26;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    /* ----- GLASS NAV (transparent, elevated) ----- */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px) saturate(200%);
+      -webkit-backdrop-filter: blur(20px) saturate(200%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+      z-index: 1000;
+      box-shadow: 0 8px 25px -10px rgba(0,0,0,0.05);
+    }
+
+    .nav-brand {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      background: linear-gradient(125deg, #1a1a2c, #2d334f, #453c6b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 4px 15px rgba(255,255,255,0.3);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      font-weight: 500;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #1d1d2b;
+      font-size: 1.1rem;
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+      transition: 0.2s;
+    }
+    .nav-links a:hover {
+      border-bottom-color: #2d334f;
+    }
+
+    .main-content {
+      padding-top: 88px;
+    }
+
+    /* ----- HORIZONTAL SLIDER – LONG FRAME (for your 4 long images) ----- */
+    .slider-section {
+      max-width: 1400px;
+      margin: 1rem auto 2.5rem;
+      padding: 0 1.2rem;
+    }
+
+    .slider-container {
+      width: 100%;
+      height: 90vh;              /* VERY LONG FRAME – perfect for elongated images */
+      min-height: 720px;         /* ensures tall display even on small screens */
+      border-radius: 2.8rem;
+      overflow: hidden;
+      box-shadow: 0 40px 70px -25px #1f1a2e60, inset 0 0 0 1px rgba(255,255,255,0.6);
+      position: relative;
+      background: #0f0f15;
+    }
+
+    .slider-horizontal {
+      display: flex;
+      height: 100%;
+      transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.15, 1);
+      will-change: transform;
+    }
+
+    .slide {
+      flex: 0 0 100%;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #0f0f15;
+    }
+
+    /* contain + max sizes – full image visible, no cropping */
+    .slide img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* subtle overlay */
+    .slider-container::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* ----- SERVICES (modern cards) ----- */
+    .services-section {
+      max-width: 1300px;
+      margin: 5rem auto;
+      padding: 0 1.8rem;
+    }
+
+    .pre-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: #5b5b70;
+      margin-bottom: 0.8rem;
+    }
+
+    .services-title {
+      font-size: 3.4rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 3.5rem;
+      background: linear-gradient(160deg, #1a1a2c, #363b52);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    .service-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 2.5rem;
+      padding: 2.2rem 1.8rem;
+      transition: all 0.25s ease;
+      box-shadow: 0 15px 30px -12px rgba(0,0,0,0.08);
+    }
+    .service-card:hover {
+      background: white;
+      transform: translateY(-6px);
+      border-color: white;
+      box-shadow: 0 30px 40px -16px #29244240;
+    }
+    .service-icon {
+      font-size: 2.6rem;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(145deg, #23263b, #3d345a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .service-card h3 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .service-card p {
+      color: #3f3f53;
+      font-weight: 350;
+    }
+
+    .region-note {
+      margin-top: 3rem;
+      background: rgba(45, 51, 79, 0.03);
+      backdrop-filter: blur(6px);
+      padding: 2rem 2.5rem;
+      border-radius: 4rem;
+      font-size: 1.3rem;
+      border: 1px solid rgba(45,51,79,0.15);
+      display: inline-block;
+      width: auto;
+    }
+    .region-note i {
+      margin-right: 12px;
+      color: #2d334f;
+    }
+    .region-note strong {
+      font-weight: 700;
+      color: #1d1d32;
+    }
+
+    /* ----- INSTAGRAM + CONTACT (sleek glass) ----- */
+    .instagram-contact {
+      max-width: 1200px;
+      margin: 5rem auto;
+      padding: 3rem 3rem;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 25px 40px -20px #2e2740;
+    }
+
+    .insta-block {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .insta-link {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 2rem;
+      font-weight: 600;
+      text-decoration: none;
+      background: white;
+      padding: 0.9rem 2.2rem;
+      border-radius: 60px;
+      box-shadow: 0 8px 20px -8px rgba(0,0,0,0.1);
+      transition: 0.2s;
+      border: 1px solid #ffffff;
+    }
+    .insta-link i {
+      font-size: 2.8rem;
+      background: linear-gradient(45deg, #f58529, #dD2a7b, #8134af, #515bd4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .insta-link:hover {
+      transform: scale(1.03);
+      box-shadow: 0 15px 25px -10px #a9449e;
+    }
+
+    .contact-btn {
+      background: #1e1e2f;
+      color: white;
+      border: none;
+      padding: 1rem 2.8rem;
+      border-radius: 3rem;
+      font-size: 1.4rem;
+      font-weight: 500;
+      box-shadow: 0 18px 25px -12px #0b0b1f;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      border: 1px solid #ffffff30;
+      cursor: default;
+    }
+    .contact-btn:hover {
+      background: #2d334f;
+      box-shadow: 0 22px 30px -10px #141424;
+    }
+
+    /* ----- VIDEO SECTION – vertical reel (big & straight) ----- */
+    .video-section {
+      max-width: 600px;
+      margin: 5rem auto;
+      padding: 0 1.5rem;
+    }
+    .video-wrapper {
+      border-radius: 3rem;
+      overflow: hidden;
+      box-shadow: 0 45px 70px -20px #191524;
+      border: 3px solid rgba(255,255,255,0.8);
+      aspect-ratio: 9 / 16;
+      width: 100%;
+      margin: 0 auto;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ----- FOOTER (minimal, warm) ----- */
+    .footer {
+      margin-top: 5rem;
+      padding: 3.5rem 2rem;
+      text-align: center;
+      background: rgba(26, 26, 38, 0.02);
+      backdrop-filter: blur(4px);
+      border-top: 1px solid rgba(0,0,0,0.05);
+      font-size: 1.2rem;
+      color: #3c3c50;
+    }
+    .footer span {
+      font-weight: 700;
+      background: linear-gradient(125deg, #1e1e2f, #3d345a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ----- RESPONSIVE (long frame adapts beautifully) ----- */
+    @media (max-width: 700px) {
+      .navbar {
+        padding: 0.8rem 1.2rem;
+      }
+      .nav-brand {
+        font-size: 1.6rem;
+      }
+      .nav-links {
+        gap: 1rem;
+      }
+      .nav-links a {
+        font-size: 0.95rem;
+      }
+      .slider-container {
+        height: 85vh;            /* still tall on mobile */
+        min-height: 600px;
+        border-radius: 2.2rem;
+      }
+      .services-title {
+        font-size: 2.4rem;
+      }
+      .service-grid {
+        gap: 1.2rem;
+      }
+      .service-card {
+        padding: 1.6rem 1.2rem;
+      }
+      .service-card h3 {
+        font-size: 1.5rem;
+      }
+      .region-note {
+        font-size: 1rem;
+        padding: 1.5rem 1.5rem;
+        border-radius: 2.5rem;
+      }
+      .instagram-contact {
+        padding: 2rem 1.5rem;
+        border-radius: 3rem;
+        flex-direction: column;
+        text-align: center;
+      }
+      .insta-link {
+        font-size: 1.4rem;
+        padding: 0.7rem 1.5rem;
+      }
+      .insta-link i {
+        font-size: 2.2rem;
+      }
+      .contact-btn {
+        font-size: 1.2rem;
+        padding: 0.8rem 2rem;
+      }
+      .video-section {
+        max-width: 90%;
+      }
+    }
+
+    @media (max-width: 450px) {
+      .slider-container {
+        height: 80vh;
+        min-height: 520px;
+      }
+      .services-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- transparent glass nav -->
+  <nav class="navbar">
+    <div class="nav-brand">develop4s_hub</div>
+    <div class="nav-links">
+      <a href="#">work</a>
+      <a href="#">craft</a>
+      <a href="#">connect</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <!-- HORIZONTAL SLIDER – LONG FRAME with 4 images (you can replace src with your gallery images) -->
+    <section class="slider-section">
+      <div class="slider-container" id="sliderContainer">
+        <div class="slider-horizontal" id="sliderHorizontal">
+          <!-- 4 slides exactly – using placeholders (replace src with your images from gallery) -->
+          <div class="slide"><img src="Screenshot_20260317-081705_Chrome.jpg" alt="your image 1" loading="lazy"></div>
+          <div class="slide"><img src="Screenshot_20260317-081721_Chrome.jpg" alt="your image 2" loading="lazy"></div>
+          <div class="slide"><img src="Screenshot_20260317-081528_Chrome.jpg" alt="your image 3" loading="lazy"></div>
+          <div class="slide"><img src="Screenshot_20260317-081459_Chrome.jpg" alt="your image 4" loading="lazy"></div>
+          <!-- clone of first for seamless loop (required for infinite) -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="services-section">
+      <div class="pre-title">✦ expertise</div>
+      <h2 class="services-title">growing businesses digitally</h2>
+
+      <div class="service-grid">
+        <div class="service-card">
+          <div class="service-icon"><i class="fas fa-shop"></i></div>
+          <h3>personal shop</h3>
+          <p>quick commerce & e‑commerce web, custom stores</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><i class="fas fa-bars-progress"></i></div>
+          <h3>menu webs</h3>
+          <p>digital menus, ordering, and brand presence</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><i class="fas fa-chart-pie"></i></div>
+          <h3>marketing webs</h3>
+          <p>high‑impact campaign sites & growth funnels</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><i class="fas fa-scissors"></i></div>
+          <h3>shop edit + reels</h3>
+          <p>creative product edits & engaging reels</p>
+        </div>
+      </div>
+
+      <div class="region-note">
+        <i class="fas fa-location-dot"></i> <strong>Manglore · Mysore · Kollegal</strong> — helped many businesses across these regions with effective growth (digital marketing + web development + creative shop edit & reels).
+      </div>
+    </section>
+
+    <!-- INSTAGRAM + CONTACT -->
+    <section class="instagram-contact">
+      <div class="insta-block">
+        <a href="#" class="insta-link" target="_blank" rel="noopener">
+          <i class="fab fa-instagram"></i> develop4s_hub </a>
+      </div>
+      <div class="contact-block">
+        <span class="contact-btn"><i class="fas fa-phone-alt"></i> contact us here</span>
+      </div>
+    </section>
+
+     <
+
+    <section class="video-section">
+        <h1>POV 🗣- u choosed us for your bussiness growth</h1>
+  <h2>your lifestyle in few sec-----~</h2>
+      <div class="video-wrapper">
+        <video controls playsinline poster="https://picsum.photos/id/1043/600/900">
+          <source src="/
+Video-317.mp4" type="video/mp4">
+          Your browser does not support video.
+        </video>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <span>devrlop4s_hub</span> · manglore · mysore · kollegal<br>
+      <span style="font-size: 0.95rem; opacity: 0.6;">© 2026 modern classic — soulful digital</span>
+    </footer>
+  </main>
+
+  <!-- SLIDER SCRIPT (auto left every 1.5s, infinite & smooth) with 4 slides + clone -->
+  <script>
+    (function() {
+      const slider = document.getElementById('sliderHorizontal');
+      const slides = document.querySelectorAll('.slide');
+      const totalSlides = slides.length;   // 5 (4 real + clone)
+      let currentIndex = 0;
+      let interval = null;
+
+      function goToNext() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateTransform();
+      }
+
+      function updateTransform() {
+        slider.style.transition = 'transform 0.7s cubic-bezier(0.25, 0.1, 0.15, 1)';
+        slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+      }
+
+      slider.addEventListener('transitionend', (e) => {
+        if (e.propertyName.includes('transform')) {
+          if (currentIndex === totalSlides - 1) {
+            slider.style.transition = 'none';
+            currentIndex = 0;
+            slider.style.transform = `translateX(0%)`;
+            void slider.offsetHeight; // force reflow
+          }
+        }
+      });
+
+      interval = setInterval(goToNext, 1500);
+
+      const container = document.querySelector('.slider-container');
+      container.addEventListener('mouseenter', () => {
+        clearInterval(interval);
+        interval = null;
+      });
+      container.addEventListener('mouseleave', () => {
+        if (!interval) {
+          interval = setInterval(goToNext, 1500);
+        }
+      });
+
+      slider.style.transition = 'none';
+      slider.style.transform = `translateX(0%)`;
+      setTimeout(() => {
+        slider.style.transition = 'transform 0.7s cubic-bezier(0.25, 0.1, 0.15, 1)';
+      }, 100);
+    })();
+  </script>
+  <!-- Now exactly 4 slides, long frame, perfect for your long images -->
+</body>
+</html>
